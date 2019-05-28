@@ -37,7 +37,8 @@ from reportlab.lib.pagesizes import letter
 
 class Programa:  
   def __init__(self):
-   self.menu()
+    self.bd = pd.read_csv('bd.csv')
+    self.menu()
 
   def menu(self):
     op = 9
@@ -84,14 +85,29 @@ class Programa:
   def verUsuarios(self):
     self.limpiarConsola()
     print ("\t\t\t\t\t\tLISTA DE USUARIOS:")
-    bd = pd.read_csv('bd.csv')
-    print(bd.to_string(index = False))
+    print(self.bd.to_string(index = False))
     pause = input("\nPresione cualquier tecla para continuar")
-  
+  # def buscarEnDataFrame(self, dato):
+  #   i = 0
+  #   print(len(self.bd['CC']['0'].index))
+  #   # while i<self.db.shape[]
   def generarPDF(self):
     self.limpiarConsola()
-    print ("aqui generas reporte PDF")
-    nombreArchivo = "example.pdf"
+    cedulaBusqueda = input("Por favor digite la cedula del usuario al cual desea generar reporte => ")
+    # for e in self.bd['CC']:
+      # if
+    # print(self.bd['CC'])
+    print(len(self.bd))
+    i = 0
+    index = 0
+    while i<len(self.bd):
+      if self.bd['CC'][i] == cedulaBusqueda:
+        index = i
+      i += 1
+
+    # print(self.bd['CC'][index],self.bd['Nombre'][index])
+    # print(self.buscarEnDataFrame(int(cedulaBusqueda)))
+    nombreArchivo = "Informe"+self.bd['Nombre'][index]+".pdf"
     # pdf = FPDF()
     # pdf.add_page()
     # pdf.set_font("Arial", size=12)
@@ -109,15 +125,22 @@ class Programa:
     c.drawString(medidaX/2-125, 720, "Laboratorio Clinico Sanitas S.A.")
     c.setFont("Helvetica", 12)
     c.drawString(65,650, "Nombre:")
-    c.drawString(120,650, "Sebastian Garcia Ospina")
+    nomStr = str(self.bd['Nombre'][index])
+    c.drawString(120,650, nomStr)
     c.drawString(360,650, "Documento:")
-    c.drawString(435,650, "1144195009")
+    cedStr = str(self.bd['CC'][index])
+    c.drawString(435,650, cedStr)
     c.drawString(65,630, "Fecha de Ingreso:")
-    c.drawString(170,630, "23/03/2019")
+    fecStr = str(self.bd['Fecha de Ingreso'][index])
+    c.drawString(170,630, fecStr)
     c.drawString(300,630, "Edad:")
-    c.drawString(335,630, "23")
+    edadStr = str(self.bd['Edad'][index])    
+    c.drawString(335,630, edadStr)
     c.drawString(390,630, "Sexo:")
-    c.drawString(425,630, "M")
+    sexStr = str(self.bd['Sexo'][index])
+    c.drawString(425,630, sexStr)
+
+
     c.save()
     pause = input("\nPresione cualquier tecla para continuar")
 
