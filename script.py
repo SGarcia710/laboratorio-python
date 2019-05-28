@@ -1,9 +1,12 @@
 import pandas as pd
 import subprocess, platform
-from fpdf import FPDF
+# from fpdf import FPDF
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+
  
 
-print("HOLA")
+# print("HOLA")
 
 # bd = pandas.read_csv('bd.csv')
 # print(bd)
@@ -46,6 +49,7 @@ class Programa:
       print ("[3] Generar Informe Usuario")
       print ("[0] Salir")
       op = int(input("\t\tOpcion => "))
+      # op = 3
       if(op == 1):
         self.ingresarUsuario()
       elif(op == 2):
@@ -55,13 +59,22 @@ class Programa:
 
   def ingresarUsuario(self):
     self.limpiarConsola()
-    print ("\t\tINGRESO DE USUARIOS:")
-    nombre = input("Digite los Nombres y Apellidos del paciente =>")
-    fecha = input("Digite la Fecha de Ingreso del paciente (dd/mm/aaaa) =>")
-    cedula = input("Digite el número de Cedula del paciente =>")
-    edad = input("Digite la Edad del paciente =>")
-    sexo = input("Digite Sexo del paciente (M: Masculino F: Femenino) =>")
-    string = nombre+","+fecha+","+cedula+","+edad+","+sexo+"\n"
+    print ("\t\t\tINGRESO DE USUARIOS:")
+    nombre = input("Digite los Nombres y Apellidos del paciente => ")
+    fecha = input("Digite la Fecha de Ingreso del paciente (dd/mm/aaaa) => ")
+    cedula = input("Digite el numero de Cedula del paciente => ")
+    edad = input("Digite la Edad del paciente => ")
+    sexo = input("Digite Sexo del paciente (M: Masculino F: Femenino) => ")
+    print("\t\t\tLISTA DE EXAMENES:")
+    print("\tGlicemia")
+    gli = input("\t\t=> ")  
+    print("\tAcido Urico")
+    uri = input("\t\t=> ")    
+    print("\tParcial de Orina")
+    ori = input("\t\t=> ")    
+    print("\tPerfil Lipidico")
+    lipi = input("\t\t=> ")
+    string = nombre+","+fecha+","+cedula+","+edad+","+sexo+","+gli+","+uri+","+ori+","+lipi+"\n"
     f=open("bd.csv", "a+")
     f.write(string)
     f.close() 
@@ -70,7 +83,7 @@ class Programa:
   
   def verUsuarios(self):
     self.limpiarConsola()
-    print ("\t\tLISTA DE USUARIOS:")
+    print ("\t\t\t\t\t\tLISTA DE USUARIOS:")
     bd = pd.read_csv('bd.csv')
     print(bd.to_string(index = False))
     pause = input("\nPresione cualquier tecla para continuar")
@@ -78,16 +91,34 @@ class Programa:
   def generarPDF(self):
     self.limpiarConsola()
     print ("aqui generas reporte PDF")
-
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Reporte Clinico", ln=1, align="C")
-    strUno = "Nombre: Sebastian Garcia\t\t C.C.: 1144195009"
-    strDos = "Fecha de Ingrso: 25/05/2019\t\t Edad: 23\t\t Sexo: M"
-    pdf.cell(200, 10, txt=strUno, ln=1, align="L")
-    pdf.cell(200, 10, txt=strDos, ln=1, align="L")
-    pdf.output("simple_demo.pdf")
+    nombreArchivo = "example.pdf"
+    # pdf = FPDF()
+    # pdf.add_page()
+    # pdf.set_font("Arial", size=12)
+    # pdf.cell(200, 10, txt="Reporte Clinico", ln=1, align="C")
+    # strUno = "Nombre:"
+    # strDos = "Fecha de Ingreso: 25/05/2019\t\t Edad: 23\t\t Sexo: M"
+    # pdf.cell(200, 10, txt="Nombre: ", ln=1, align="L")
+    # pdf.cell(200, 10, txt="Cedula :", ln=1, align="L")
+    # pdf.output("simple_demo.pdf")
+    # print(letter)
+    c = canvas.Canvas(nombreArchivo, pagesize=letter)
+    medidaX, medidaY = letter
+    #medidas (612.0, 792.0)
+    c.setFont("Helvetica", 16)
+    c.drawString(medidaX/2-125, 720, "Laboratorio Clinico Sanitas S.A.")
+    c.setFont("Helvetica", 12)
+    c.drawString(65,650, "Nombre:")
+    c.drawString(120,650, "Sebastian Garcia Ospina")
+    c.drawString(360,650, "Documento:")
+    c.drawString(435,650, "1144195009")
+    c.drawString(65,630, "Fecha de Ingreso:")
+    c.drawString(170,630, "23/03/2019")
+    c.drawString(300,630, "Edad:")
+    c.drawString(335,630, "23")
+    c.drawString(390,630, "Sexo:")
+    c.drawString(425,630, "M")
+    c.save()
     pause = input("\nPresione cualquier tecla para continuar")
 
   def limpiarConsola(self):
