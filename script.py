@@ -14,7 +14,8 @@ class Programa:
       print ("Menu Laboratorio Clinico")
       print ("[1] Ingresar Usuario")
       print ("[2] Ver Usuarios")
-      print ("[3] Generar Informe Usuario")
+      print ("[3] Eliminar Usuario")
+      print ("[4] Generar Informe Usuario")
       print ("[0] Salir")
       op = int(input("\t\tOpcion => "))
       if(op == 1):
@@ -22,7 +23,18 @@ class Programa:
       elif(op == 2):
         self.verUsuarios()
       elif(op == 3):
+        self.eliminarUsuario()
+      elif(op == 4):
         self.generarPDF()
+  
+  def eliminarUsario(self):
+    # with open("bd.csv", "r+") as f:
+    #   d = f.readlines()
+    #   f.seek(0)
+    #   for i in d:
+    #       if i != "line you want to remove...":
+    #           f.write(i)
+    #   f.truncate()
 
   def ingresarUsuario(self):
     self.limpiarConsola()
@@ -65,12 +77,11 @@ class Programa:
       if bd['CC'][i] == int(cedulaBusqueda):
         index = i
       i += 1
-
     nombreArchivo = "Informe"+bd['Nombre'][index]+".pdf"
-    print(nombreArchivo)
     c = canvas.Canvas(nombreArchivo, pagesize=letter)
-    medidaX, medidaY = letter
-    #medidas (612.0, 792.0)
+    medidaX, medidaY = letter#medidas (612.0, 792.0)
+
+
     c.setFont("Helvetica", 16)
     c.drawString(medidaX/2-125, 720, "Laboratorio Clinico Sanitas S.A.")
     c.setFont("Helvetica", 12)
@@ -89,6 +100,41 @@ class Programa:
     c.drawString(390,630, "Sexo:")
     sexStr = str(bd['Sexo'][index])
     c.drawString(425,630, sexStr)
+    c.drawString(65,600,"Examen")
+    c.drawString(300,600,"Resultados")
+    c.drawString(380,600,"Valores de Referencia")
+    primerFila = 580
+    if bd['Glicemia'][index] == "si":
+      resultado = input("Ingrese el resultado del examen de Glicemia => ")
+      valores = "0.5 - 11"
+      c.drawString(65,primerFila,"Glicemia")
+      c.drawString(300,primerFila, str(resultado))
+      c.drawString(380,primerFila, str(valores))
+      primerFila = primerFila-20
+    if bd['Acido Urico'][index] == "si":
+      resultado = input("Ingrese el resultado del examen de Acido Urico => ")
+      valores = "100 - 200"
+      c.drawString(65,primerFila,"Acido Urico")
+      c.drawString(300,primerFila, str(resultado))
+      c.drawString(380,primerFila, str(valores))
+      primerFila = primerFila-20
+
+    if bd['Parcial de Orina'][index] == "si":
+      resultado = input("Ingrese el resultado del examen de Parcial de Orina => ")
+      valores = "5 - 24"
+      c.drawString(65,primerFila,"Parcial de Orina")
+      c.drawString(300,primerFila, str(resultado))
+      c.drawString(380,primerFila, str(valores))
+      primerFila = primerFila-20
+
+    if bd['Perfil Lipidico'][index] == "si":
+      resultado = input("Ingrese el resultado del examen de Perfil Lipidico => ")
+      valores = "50 - 100"
+      c.drawString(65,primerFila,"Perfil Lipidico")
+      c.drawString(300,primerFila, str(resultado))
+      c.drawString(380,primerFila, str(valores))
+      primerFila = primerFila-20
+
     c.save()
     pause = input("\nPresione cualquier tecla para continuar")
 
