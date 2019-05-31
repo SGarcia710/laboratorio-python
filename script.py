@@ -27,7 +27,7 @@ class Programa:
       elif(op == 4):
         self.generarPDF()
   
-  def eliminarUsario(self):
+#  def eliminarUsario(self):
     # with open("bd.csv", "r+") as f:
     #   d = f.readlines()
     #   f.seek(0)
