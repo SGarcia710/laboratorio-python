@@ -14,8 +14,7 @@ class Programa:
       print ("Menu Laboratorio Clinico")
       print ("[1] Ingresar Usuario")
       print ("[2] Ver Usuarios")
-      print ("[3] Eliminar Usuario")
-      print ("[4] Generar Informe Usuario")
+      print ("[3] Generar Informe Usuario")
       print ("[0] Salir")
       op = int(input("\t\tOpcion => "))
       if(op == 1):
@@ -23,19 +22,8 @@ class Programa:
       elif(op == 2):
         self.verUsuarios()
       elif(op == 3):
-        self.eliminarUsuario()
-      elif(op == 4):
         self.generarPDF()
   
-#  def eliminarUsario(self):
-    # with open("bd.csv", "r+") as f:
-    #   d = f.readlines()
-    #   f.seek(0)
-    #   for i in d:
-    #       if i != "line you want to remove...":
-    #           f.write(i)
-    #   f.truncate()
-
   def ingresarUsuario(self):
     self.limpiarConsola()
     print ("\t\t\tINGRESO DE USUARIOS:")
